@@ -15,19 +15,33 @@ export class Table extends ExcelComponent {
     onMousedown(event) {
         if (event.target.dataset.resize) {
             const $resizer = $(event.target)
-            // const $parent = $resizer.$el.parentNode // bad
-            // const $parent = $resizer.$el.closest('.column')
             const $parent = $resizer.closest('[data-type="resizable"]')
-            console.log($parent)
             const coords = $parent.getCoords()
-            document.onmousemove = e => {
-                const delta = e.pageX - coords.right
-                const value = coords.width + delta
-                $parent.$el.style.width = value + 'px'
-                // console.log(coords.width, delta, $parent)
+            if (event.target.dataset.resize == 'col') {
+                const cells = this.$root
+                    .findAll(`[data-col="${$parent.data.col}"]`)
+                document.onmousemove = e => {
+                    const delta = e.pageX - coords.right
+                    const value = coords.width + delta
+                    // $parent.$el.style.width = value + 'px'
+                    cells.forEach(element => {
+                        element.style.width = value + 'px'
+                    })
+                }
+                document.onmouseup = () => {
+                    document.onmousemove = null
+                }
             }
-            document.onmouseup = () => {
-                document.onmousemove = null
+            if (event.target.dataset.resize == 'row') {
+                const $rows = $parent.closest('[data-type="row"]')
+                document.onmousemove = e => {
+                    const delta = e.pageY - coords.bottom
+                    const value = coords.height + delta
+                    $rows.$el.style.height = value + 'px'
+                }
+                document.onmouseup = () => {
+                    document.onmousemove = null
+                }
             }
         }
     }
