@@ -17,31 +17,23 @@ export class Table extends ExcelComponent {
             const $resizer = $(event.target)
             const $parent = $resizer.closest('[data-type="resizable"]')
             const coords = $parent.getCoords()
-            if (event.target.dataset.resize == 'col') {
-                const cells = this.$root
-                    .findAll(`[data-col="${$parent.data.col}"]`)
-                document.onmousemove = e => {
+            const type = $resizer.data.resize
+            const cells = this.$root
+                .findAll(`[data-col="${$parent.data.col}"]`)
+            document.onmousemove = e => {
+                if (type === 'col') {
                     const delta = e.pageX - coords.right
                     const value = coords.width + delta
                     // $parent.$el.style.width = value + 'px'
-                    cells.forEach(element => {
-                        element.style.width = value + 'px'
-                    })
-                }
-                document.onmouseup = () => {
-                    document.onmousemove = null
-                }
-            }
-            if (event.target.dataset.resize == 'row') {
-                const $rows = $parent.closest('[data-type="row"]')
-                document.onmousemove = e => {
+                    cells.forEach(el => el.style.width = value + 'px')
+                } else {
                     const delta = e.pageY - coords.bottom
                     const value = coords.height + delta
-                    $rows.$el.style.height = value + 'px'
+                    $parent.css({height: value + 'px'})
                 }
-                document.onmouseup = () => {
-                    document.onmousemove = null
-                }
+            }
+            document.onmouseup = () => {
+                document.onmousemove = null
             }
         }
     }

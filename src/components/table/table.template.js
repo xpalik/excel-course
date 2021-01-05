@@ -23,9 +23,8 @@ function createRow(index, content) {
     const resize = index ? `<div class="row-resize" ` +
         `data-resize="row"></div>` : ''
     return `
-    <div class="row" data-type="row">
-        <div class="row-info" 
-        data-type="resizable">${index ? index : ''}${resize}
+    <div class="row" data-type="resizable">
+        <div class="row-info">${index ? index : ''}${resize}
         </div>
         <div class="row-data">${content}</div>
     </div>
