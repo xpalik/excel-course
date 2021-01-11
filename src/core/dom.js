@@ -23,6 +23,9 @@ class Dom {
     off(listener, callback) {
         this.$el.removeEventListener(listener, callback)
     }
+    find(selector) {
+        return $(this.$el.querySelector(selector))
+    }
     append(node) {
         if (node instanceof Dom) {
             node = node.$el
@@ -48,6 +51,22 @@ class Dom {
             this.$el.style[key] = styles[key]
         })
         return $(this.$el)
+    }
+    id(parse) {
+        if (parse) {
+            const parsed = this.id().split(':')
+            return {
+                row: +parsed[0],
+                col: +parsed[1]
+            }
+        }
+        return this.data.id
+    }
+    addClass(className) {
+        this.$el.classList.add(className)
+    }
+    removeClass(className) {
+        this.$el.classList.remove(className)
     }
     findAll(selector) {
         return document.querySelectorAll(selector)
