@@ -23,6 +23,9 @@ export class Formula extends ExcelComponent {
         this.$on('table:select', $cell => {
             this.$formula.text($cell.text())
         })
+        this.$on('table:input', $cell => {
+            this.$formula.text($cell.text())
+        })
     }
 
     onInput(event) {
@@ -30,7 +33,8 @@ export class Formula extends ExcelComponent {
     }
 
     onKeydown(event) {
-        if (event.key === 'Enter') {
+        const keys = ['Enter', 'Tab']
+        if (keys.includes(event.key)) {
             event.preventDefault()
             this.$emit('formula:done')
         }
